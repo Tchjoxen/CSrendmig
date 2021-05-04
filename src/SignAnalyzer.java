@@ -63,41 +63,48 @@ public class SignAnalyzer {
 class Evaluator{
 	public MemKonfig Evaluate(MemKonfig mem, Expression exp) {
 		//System.out.println(exp.GetLabel());
-		
-		switch(exp.Type()) {
-		  case "Plus":
-			    return PlusEval(mem, (PlusExpression)exp);
-		  case "Assignment":
-			    return AssignmentEval(mem, (AssignmentExpression)exp);
-		  case "Num":
-			    return NumEval(mem, (NumExpression)exp);
-		  case "Minus":
-			    return MinusEval(mem, (MinusExpression)exp);
-		  case "<=":
-			    return BooleanLessThanEqualsEval(mem, (BooleanLessThanEqualsExpression)exp);
-		  case "Times":
-			    return TimesEval(mem, (TimesExpression)exp);
-		  case "Div":
-			    return DivEval(mem, (DivExpression)exp);
-		  case "=":
-			    return BooleanEqualsEval(mem, (BooleanEqualsExpression)exp);
-		  case "Pow":
-			    return PowEval(mem, (PowExpression)exp);
-		  case "<":
-			    return BooleanLessThanEval(mem, (BooleanLessThanExpression)exp);
-		  case ">":
-			    return BooleanGreaterThanEval(mem, (BooleanGreaterThanExpression)exp);
-		  case ">=":
-			    return BooleanGreaterThanEqualsEval(mem, (BooleanGreaterThanEqualsExpression)exp);
-		  case "!=":
-			    return BooleanNegationEqualsEval(mem, (BooleanNegationEqualsExpression)exp);
-		  case "!":
-			    return BooleanNegationEval(mem, (BooleanNegationExpression)exp);
-		  case "||":
-			    return BooleanDoubleOrEval(mem, (BooleanDoubleOrExpression)exp);
-		  default:
-			  System.out.println("Unhandeled: " + exp.GetLabel());
-			  return mem;
+		try {
+			switch (exp.Type()) {
+				case "Plus":
+					return PlusEval(mem, (PlusExpression) exp);
+				case "Assignment":
+					return AssignmentEval(mem, (AssignmentExpression) exp);
+				case "Num":
+					return NumEval(mem, (NumExpression) exp);
+				case "Minus":
+					return MinusEval(mem, (MinusExpression) exp);
+				case "<=":
+					return BooleanLessThanEqualsEval(mem, (BooleanLessThanEqualsExpression) exp);
+				case "Times":
+					return TimesEval(mem, (TimesExpression) exp);
+				case "Div":
+					return DivEval(mem, (DivExpression) exp);
+				case "=":
+					return BooleanEqualsEval(mem, (BooleanEqualsExpression) exp);
+				case "Pow":
+					return PowEval(mem, (PowExpression) exp);
+				case "<":
+					return BooleanLessThanEval(mem, (BooleanLessThanExpression) exp);
+				case ">":
+					return BooleanGreaterThanEval(mem, (BooleanGreaterThanExpression) exp);
+				case ">=":
+					return BooleanGreaterThanEqualsEval(mem, (BooleanGreaterThanEqualsExpression) exp);
+				case "!=":
+					return BooleanNegationEqualsEval(mem, (BooleanNegationEqualsExpression) exp);
+				case "!":
+					return BooleanNegationEval(mem, (BooleanNegationExpression) exp);
+				case "||":
+					return BooleanDoubleOrEval(mem, (BooleanDoubleOrExpression) exp);
+				default:
+					System.out.println("Unhandeled: " + exp.GetLabel());
+					System.out.println("");
+					return mem;
+			}
+		}
+		catch (Exception e){
+			System.out.println("Error: " + e.getMessage() + "\n" + "Unhandled: " + exp.GetLabel());
+			System.out.println("");
+			return mem;
 		}
 		
 	}
@@ -177,7 +184,7 @@ class Evaluator{
 		VarKonfig num = Evaluate(mem, exp.a).memory.get(0); // int num = Integer.parseInt(((NumExpression)exp.a).n);
 		
 		for(VarKonfig x : currentMem.memory) {
-			if(var == x.varname) {
+			if(var.equals(x.varname)) {
 				if(num.plus) {
 					if(num.minus) {
 						x.plus = true;
@@ -220,7 +227,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals( var.x)) {
 	            if( num > 0) {
 	                if(x.zero){
 	                    x.minus = true;
@@ -253,7 +260,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals( var.x)) {
 	            if( num > 0) {
 	                x.zero = false;
 	                x.minus = false;
@@ -277,7 +284,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals( var.x)) {
 	            if( num > 0) {
 	                break;
 	            }else if( num < 0 ){
@@ -305,7 +312,7 @@ class Evaluator{
 	        int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	        for(VarKonfig x : currentMem.memory) {
-	            if(x.varname == var.x) {
+	            if(x.varname.equals(var.x)) {
 	                if( num > 0) {
 	                    if(x.zero){
 	                        x.zero = true;
@@ -341,9 +348,9 @@ class Evaluator{
 	        VarExpression var2 = (VarExpression)exp.rhs;
 
 	        for(VarKonfig x : currentMem.memory) {
-	            if(x.varname == var.x) {
+	            if(x.varname.equals(var.x)) {
 	                for(VarKonfig y : currentMem.memory){
-	                    if(y.varname == var2.x) {
+	                    if(y.varname.equals(var2.x)) {
 	                        if(x.plus && y.plus){
 	                            x.plus = true;
 	                        }
@@ -376,7 +383,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 
 	            if( num > 0) {
 	                if(x.zero){
@@ -412,7 +419,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 
 	            if( num > 0) {
 	                if(x.zero){
@@ -451,7 +458,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 	            if( num > 0) {
 	                break;
 	            }else if( num <= 0 ){
@@ -471,7 +478,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 	            if( num < 0) {
 	                break;
 	            }else if( num > 0 ){
@@ -493,7 +500,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 	            if( num < 0) {
 	                break;
 	            }else if( num >= 0 ){
@@ -513,7 +520,7 @@ class Evaluator{
 	    int num = Integer.parseInt(((NumExpression)exp.rhs).n);
 
 	    for(VarKonfig x : currentMem.memory) {
-	        if(x.varname == var.x) {
+	        if(x.varname.equals(var.x)) {
 	            if( num > 0) {
 	                x.plus = false;
 	            }else if( num < 0 ){
@@ -533,9 +540,9 @@ class Evaluator{
 		if(exp.value.Type() == ">") {
 			BooleanGreaterThanExpression gte = (BooleanGreaterThanExpression)exp.value;
 			for(VarKonfig x : currentMem.memory) {
-		        if(x.varname == ((VarExpression)gte.lhs).x) {
+		        if(x.varname.equals(((VarExpression)gte.lhs).x)) {
 		        	for(VarKonfig y : mem.memory) {
-				        if(y.varname == x.varname) {
+				        if(y.varname.equals(x.varname)) {
 				            if(y.minus != x.minus) {
 				            	x.minus = !x.minus;
 				            }
@@ -560,7 +567,7 @@ class Evaluator{
 		}else if(exp.value.Type() == "<=") {
 			BooleanLessThanEqualsExpression gte = (BooleanLessThanEqualsExpression)exp.value;
 			for(VarKonfig x : currentMem.memory) {
-		        if(x.varname == ((VarExpression)gte.lhs).x) {
+		        if(x.varname.equals(((VarExpression)gte.lhs).x)) {
 		            x.minus = !x.minus;
 		            x.plus = !x.plus;
 		            x.zero = false;
