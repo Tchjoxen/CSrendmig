@@ -59,7 +59,7 @@ public class Language {
 
 		while (true) {
 			// Read an expression from the console
-			System.out.print("Enter an arithmetic expression: ");
+			System.out.println("Enter an arithmetic expression: ");
 			String input = scanner.nextLine();
             // System.out.println("Count:");
             // int count = Integer.parseInt(System.console().readLine());
@@ -116,8 +116,7 @@ public class Language {
                 String[] v = s.split("=");
                 if (v[1].equals("private")) {
                     Variables.put(v[0], v[1]);
-                }
-                if (v[1].equals("public")){
+                }else if (v[1].equals("public")){
                 	Variables.put(v[0], v[1]);
                 }
                 else {
@@ -138,7 +137,8 @@ public class Language {
             
             
            
-            //SignAnalyzer SA = new SignAnalyzer(varKonfigs1, edges);
+
+           // SignAnalyzer SA = new SignAnalyzer(varKonfigs1, edges);
             
             //System.out.println(SA.Analyze());
 
