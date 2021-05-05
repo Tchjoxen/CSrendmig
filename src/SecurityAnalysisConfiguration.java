@@ -72,6 +72,17 @@ public class SecurityAnalysisConfiguration {
         return allowedFlows;
     }
 
+    public ArrayList<Flow> GetAllViolationFlows(){
+        ArrayList<Flow> violationFlows = new ArrayList<>();
+        for (Flow f : Flows
+        ) {
+            if(!f.From.SecurityLevel.CompareFlowToo(f.To.SecurityLevel)){
+                violationFlows.add(f);
+            }
+        }
+        return violationFlows;
+    }
+
     private Boolean ContainsLevel(SecurityClass level){
         for (SecurityClass l : Levels
         ) {
