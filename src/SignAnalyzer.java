@@ -96,13 +96,13 @@ class Evaluator{
 				case "||":
 					return BooleanDoubleOrEval(mem, (BooleanDoubleOrExpression) exp);
 				default:
-					System.out.println("Unhandeled: " + exp.GetLabel());
+					System.out.println("Unhandeled: " + exp.GetLabel() + " Type: " + exp.Type());
 					System.out.println("");
 					return mem;
 			}
 		}
 		catch (Exception e){
-			System.out.println("Error: " + e.getMessage() + "\n" + "Unhandled: " + exp.GetLabel());
+			System.out.println("Error: " + e.getMessage() + "\n" + "Unhandled: " + exp.GetLabel() + " Type: " + exp.Type());
 			System.out.println("");
 			return mem;
 		}
