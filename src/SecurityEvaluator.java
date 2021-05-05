@@ -28,12 +28,25 @@ public class SecurityEvaluator extends LanguageBaseVisitor<ArrayList<String>> {
 
     @Override public ArrayList<String> visitAssignmentToArray(LanguageParser.AssignmentToArrayContext ctx) { 
 
-        return null;
+    	SecurityConfig toConfig = _secConfig.FindConfigByVarName(ctx.A.getText());
+    	ArrayList<String> rhs = visit(ctx.value);
+    	
+    	for(int i=0; i < rhs.size(); i++) {
+    		SecurityConfig fromConfig = _secConfig.FindConfigByVarName(rhs.get(i));
+    		_secConfig.AddFlow(new Flow(fromConfig, toConfig));
+    	}
+    	
+    	rhs.clear();
+    	rhs.add(toConfig.VarName);
+
+    	
+        return rhs;
     }
 
     @Override public ArrayList<String> visitEndCommand(LanguageParser.EndCommandContext ctx) { 
     	ArrayList<String> lhs = visit(ctx.lhs);
     	ArrayList<String> rhs = visit(ctx.rhs);
+    	
     	lhs.removeAll(rhs);
     	lhs.addAll(rhs);
         return lhs;
@@ -78,8 +91,9 @@ public class SecurityEvaluator extends LanguageBaseVisitor<ArrayList<String>> {
 	    	}
     	}
     	
-    	rhs.clear();
-        return rhs;
+    	lhs.removeAll(rhs);
+    	lhs.addAll(rhs);
+        return lhs;
     }
 
     @Override
@@ -154,7 +168,9 @@ public class SecurityEvaluator extends LanguageBaseVisitor<ArrayList<String>> {
     @Override
     public ArrayList<String> visitArrayA(LanguageParser.ArrayAContext ctx) {
 
-        return null;
+    	ArrayList<String> vari = new ArrayList<String>();
+    	vari.add(ctx.A.getText());
+        return vari;
     }
 
     @Override
