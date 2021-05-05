@@ -44,17 +44,11 @@ public class Language {
         sc.AddConfig(new SecurityConfig("y", priv));
         sc.AddConfig(new SecurityConfig("z", pub));
 
-        var test = sc.GetAllAllowedFlows();
-        for (Flow f: test
-             ) {
-            System.out.println(f.From.VarName + " -> " + f.To.VarName);
-        }
-
-
         // We instantiate an evaluator of arithmetic expressions
 		// stored in an visitor-based AST
         GeneratedAST generatedAST = new GeneratedAST();
         GeneratedPG LGP = new GeneratedPG();
+        SecurityEvaluator secEval = new SecurityEvaluator(sc);
         Scanner scanner = new Scanner(System.in);
 
 		while (true) {
@@ -63,13 +57,13 @@ public class Language {
 			String input = scanner.nextLine();
             // System.out.println("Count:");
             // int count = Integer.parseInt(System.console().readLine());
-            System.out.println("Abstract Variable definitions:");
+            /*System.out.println("Abstract Variable definitions:");
             String variables = scanner.nextLine();
             
             
             
             HashMap<String, Double> vari = new HashMap<>();
-            String[] var = variables.replace(" ", "").split(",");
+            String[] var = variables.replace(" ", "").split(",");*/
             
 			// Build the parser for the content of the input in several steps
 
@@ -85,16 +79,39 @@ public class Language {
 			// Create a parser for the given token stream
             LanguageParser parser = new LanguageParser(tokens);
             
+            ArrayList<String> as = secEval.visit(parser.start());
+            System.out.println("Actual flows: ");
+            for (Flow f: secEval._secConfig.Flows
+                    ) {
+                   System.out.println(f.From.VarName + " -> " + f.To.VarName);
+               }
+            System.out.println("Allowed flows: ");
+            for (Flow f: sc.GetAllAllowedFlows()
+                    ) {
+                   System.out.println(f.From.VarName + " -> " + f.To.VarName);
+               }
+            
+            System.out.println("Violated flows: ");
+            for (Flow f: sc.GetAllViolationFlows()
+                    ) {
+                   System.out.println(f.From.VarName + " -> " + f.To.VarName);
+               }
+            
+            if(sc.GetAllViolationFlows().isEmpty()) {
+            	System.out.println("secure");
+            }else {
+            	System.out.println("not secure");
+            }
             
 
             // System.out.println(generatedAST.visit(parser.start()));
-            ArrayList<Edge> edges = LGP.getProgramGraph(parser);
+            /*ArrayList<Edge> edges = LGP.getProgramGraph(parser);
 
             for (Edge e : edges) {
                 System.out.println(e.GetPGElement());
             }
 
-            /*ArrayList<VarKonfig> varKonfigs1 = new ArrayList<VarKonfig>();
+            ArrayList<VarKonfig> varKonfigs1 = new ArrayList<VarKonfig>();
             for (String s : var){
                 VarKonfig vk = new VarKonfig();
                 String[] v = s.split("=");
@@ -109,7 +126,7 @@ public class Language {
                     vk.zero = true;
                 }
                 varKonfigs1.add(vk);
-            }*/
+            }
             
             HashMap<String, String> Variables = new HashMap<>();
             for (String s : var){
@@ -133,7 +150,7 @@ public class Language {
         				System.out.print(v1.getKey() + " -> " + v2.getKey() + ", ");
         			}
         		}	
-    		}	
+    		}	*/
             
             
            
