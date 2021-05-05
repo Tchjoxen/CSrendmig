@@ -17,7 +17,7 @@ public class SecurityAnalysisConfiguration {
     private Boolean ContainsLevel(SecurityClass level){
         for (SecurityClass l : Levels
         ) {
-            if(l.Score == level.Score || l.Name.equals(level.Name)){
+            if(l.FlowToo.Name.equals(level.FlowToo.Name) || l.Name.equals(level.Name)){
                 return true;
             }
         }
@@ -84,7 +84,7 @@ public class SecurityAnalysisConfiguration {
              ) {
             for (SecurityConfig c2 : Configs
             ) {
-                if(c.SecurityLevel.CompareFlowToo(c2.SecurityLevel) >= 0){
+                if(c.SecurityLevel.CompareFlowToo(c2.SecurityLevel)){
                     allowedFlows.add(new Flow(c,c2));
                 }
             }

@@ -34,6 +34,7 @@ public class Language {
 	// asking for arithmetic expressions and returning their value
 	public void run() throws Exception {
 
+
 		// We instantiate an evaluator of arithmetic expressions
 		// stored in an visitor-based AST
         GeneratedAST generatedAST = new GeneratedAST();
@@ -121,9 +122,9 @@ public class Language {
             
             
            
-            SignAnalyzer SA = new SignAnalyzer(varKonfigs1, edges);
+            //SignAnalyzer SA = new SignAnalyzer(varKonfigs1, edges);
             
-            System.out.println(SA.Analyze());
+            //System.out.println(SA.Analyze());
 
 		}
 	}

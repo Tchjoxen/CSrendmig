@@ -1,13 +1,17 @@
 public class SecurityClass {
-    public int Score;
+    public SecurityClass FlowToo;
     public String Name;
 
-    public SecurityClass(int score, String name){
+    public SecurityClass(String name){
         this.Name = name;
-        this.Score = score;
     }
 
-    public int CompareFlowToo(SecurityClass other){
-        return other.Score - this.Score;
+    public SecurityClass(String name, SecurityClass flowToo){
+        this.Name = name;
+        this.FlowToo = flowToo;
+    }
+
+    public Boolean CompareFlowToo(SecurityClass other){
+        return other.Name.equals(this.FlowToo.Name);
     }
 }
