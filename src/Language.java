@@ -5,6 +5,7 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 
@@ -51,7 +52,7 @@ public class Language {
             
             
             HashMap<String, Double> vari = new HashMap<>();
-            String[] var = variables.split(",");
+            String[] var = variables.replace(" ", "").split(",");
             
 			// Build the parser for the content of the input in several steps
 
@@ -76,7 +77,7 @@ public class Language {
                 System.out.println(e.GetPGElement());
             }
 
-            ArrayList<VarKonfig> varKonfigs1 = new ArrayList<VarKonfig>();
+            /*ArrayList<VarKonfig> varKonfigs1 = new ArrayList<VarKonfig>();
             for (String s : var){
                 VarKonfig vk = new VarKonfig();
                 String[] v = s.split("=");
@@ -91,7 +92,32 @@ public class Language {
                     vk.zero = true;
                 }
                 varKonfigs1.add(vk);
+            }*/
+            
+            HashMap<String, String> Variables = new HashMap<>();
+            for (String s : var){
+                String[] v = s.split("=");
+                if (v[1].equals("private")) {
+                    Variables.put(v[0], v[1]);
+                }
+                if (v[1].equals("public")){
+                	Variables.put(v[0], v[1]);
+                }
+                else {
+                	throw new Exception();
+                }
             }
+            
+            System.out.println("Allowed flows");
+            for (Map.Entry<String, String> v1 : Variables.entrySet()){
+            	for (Map.Entry<String, String> v2 : Variables.entrySet()){
+        			if(v2.getValue().equals("private")) {
+        				System.out.print(v1.getKey() + " -> " + v2.getKey() + ", ");
+        			}else if(v1.getValue().equals("public") && v2.getValue().equals("public")) {
+        				System.out.print(v1.getKey() + " -> " + v2.getKey() + ", ");
+        			}
+        		}	
+    		}	
             
             
            
