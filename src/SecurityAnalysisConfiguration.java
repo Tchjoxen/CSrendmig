@@ -17,7 +17,7 @@ public class SecurityAnalysisConfiguration {
     private Boolean ContainsLevel(SecurityClass level){
         for (SecurityClass l : Levels
         ) {
-            if(l.FlowToo.Name.equals(level.FlowToo.Name) || l.Name.equals(level.Name)){
+            if(l.Name.equals(level.Name)){
                 return true;
             }
         }

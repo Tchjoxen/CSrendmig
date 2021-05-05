@@ -1,17 +1,24 @@
+import java.util.ArrayList;
+
 public class SecurityClass {
-    public SecurityClass FlowToo;
+    public ArrayList<SecurityClass> FlowToos = new ArrayList<>();
     public String Name;
 
     public SecurityClass(String name){
         this.Name = name;
     }
 
-    public SecurityClass(String name, SecurityClass flowToo){
-        this.Name = name;
-        this.FlowToo = flowToo;
+    public void AddFlowToo(SecurityClass level){
+        FlowToos.add(level);
     }
 
     public Boolean CompareFlowToo(SecurityClass other){
-        return other.Name.equals(this.FlowToo.Name);
+        for (SecurityClass s : FlowToos
+             ) {
+            if(other.Name.equals(s.Name)){
+                return true;
+            }
+        }
+        return false;
     }
 }

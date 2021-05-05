@@ -33,9 +33,16 @@ public class Language {
 	// The run function will interact with us through the console
 	// asking for arithmetic expressions and returning their value
 	public void run() throws Exception {
+	    // clean < Facebook, clean < Google, clean < Microsoft
+        SecurityClass f = new SecurityClass("Facebook");
+        SecurityClass c = new SecurityClass("clean");
+        SecurityClass g = new SecurityClass("Google");
+        SecurityClass m = new SecurityClass("Microsoft");
+        c.AddFlowToo(f);
+        c.AddFlowToo(g);
+        c.AddFlowToo(m);
 
-
-		// We instantiate an evaluator of arithmetic expressions
+        // We instantiate an evaluator of arithmetic expressions
 		// stored in an visitor-based AST
         GeneratedAST generatedAST = new GeneratedAST();
         GeneratedPG LGP = new GeneratedPG();
