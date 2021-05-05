@@ -34,13 +34,22 @@ public class Language {
 	// asking for arithmetic expressions and returning their value
 	public void run() throws Exception {
 	    // clean < Facebook, clean < Google, clean < Microsoft
-        SecurityClass f = new SecurityClass("Facebook");
-        SecurityClass c = new SecurityClass("clean");
-        SecurityClass g = new SecurityClass("Google");
-        SecurityClass m = new SecurityClass("Microsoft");
-        c.AddFlowToo(f);
-        c.AddFlowToo(g);
-        c.AddFlowToo(m);
+        SecurityClass pub = new SecurityClass("public");
+        SecurityClass priv = new SecurityClass("private");
+        pub.AddFlowToo(priv);
+        SecurityAnalysisConfiguration sc = new SecurityAnalysisConfiguration();
+        sc.AddLevel(pub);
+        sc.AddLevel(priv);
+        sc.AddConfig(new SecurityConfig("x", priv));
+        sc.AddConfig(new SecurityConfig("y", priv));
+        sc.AddConfig(new SecurityConfig("z", pub));
+
+        var test = sc.GetAllAllowedFlows();
+        for (Flow f: test
+             ) {
+            System.out.println(f.From.VarName + " -> " + f.To.VarName);
+        }
+
 
         // We instantiate an evaluator of arithmetic expressions
 		// stored in an visitor-based AST

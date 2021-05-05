@@ -13,6 +13,9 @@ public class SecurityClass {
     }
 
     public Boolean CompareFlowToo(SecurityClass other){
+        if(this.Name.equals(other.Name)){
+            return true;
+        }
         for (SecurityClass s : FlowToos
              ) {
             if(other.Name.equals(s.Name)){
