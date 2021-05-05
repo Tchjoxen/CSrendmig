@@ -8,6 +8,6 @@ public class SecurityClass {
     }
 
     public int CompareFlowToo(SecurityClass other){
-        return this.Score - other.Score;
+        return other.Score - this.Score;
     }
 }
