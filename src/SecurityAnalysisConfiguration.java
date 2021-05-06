@@ -1,9 +1,9 @@
-import java.io.ObjectInputFilter;
+//import java.io.ObjectInputFilter;
 import java.util.ArrayList;
 
 public class SecurityAnalysisConfiguration {
-    public ArrayList<SecurityConfig> Configs = new ArrayList<SecurityConfig>();
-    public ArrayList<SecurityClass> Levels = new ArrayList<SecurityClass>();
+    public ArrayList<SecurityConfig> Configs = new ArrayList<>();
+    public ArrayList<SecurityClass> Levels = new ArrayList<>();
     public ArrayList<Flow> Flows = new ArrayList<>();
 
 

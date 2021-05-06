@@ -3,10 +3,8 @@ import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+
+import java.util.*;
 
 
 public class Language {
@@ -33,16 +31,7 @@ public class Language {
 	// The run function will interact with us through the console
 	// asking for arithmetic expressions and returning their value
 	public void run() throws Exception {
-	    // clean < Facebook, clean < Google, clean < Microsoft
-        SecurityClass pub = new SecurityClass("public");
-        SecurityClass priv = new SecurityClass("private");
-        pub.AddFlowToo(priv);
         SecurityAnalysisConfiguration sc = new SecurityAnalysisConfiguration();
-        sc.AddLevel(pub);
-        sc.AddLevel(priv);
-        sc.AddConfig(new SecurityConfig("x", priv));
-        sc.AddConfig(new SecurityConfig("y", priv));
-        sc.AddConfig(new SecurityConfig("z", pub));
 
         // We instantiate an evaluator of arithmetic expressions
 		// stored in an visitor-based AST
@@ -54,17 +43,93 @@ public class Language {
 		while (true) {
 			// Read an expression from the console
 			System.out.println("Enter an arithmetic expression: ");
-			String input = scanner.nextLine();
+			scanner.nextLine();
+			String input = "if x>=y -> z:=x [] y>x -> z:=y fi";
             // System.out.println("Count:");
             // int count = Integer.parseInt(System.console().readLine());
             /*System.out.println("Abstract Variable definitions:");
             String variables = scanner.nextLine();
-            
+
+
+
+
+            //for (int i = 0; i < securityArgs.length; i++) {
+            //                String[] lrhs = securityArgs2[i].split("=");
+            //                //SecurityAnalysisConfiguration sc = new SecurityAnalysisConfiguration();
+            //                SecurityClass s1 = new SecurityClass(i+1, lrhs[1]);
+            //                sc.AddLevel(s1);
+            //                sc.AddConfig(new SecurityConfig(lrhs[0], s1));
+            //            }
+            //
+            //            String s1NameInput = "public";
+            //            String xSecClassInput = "public";
+            //            SecurityAnalysisConfiguration sc = new SecurityAnalysisConfiguration();
+            //            var s1 = new SecurityClass(1, s1NameInput);
+            //            var s2 = new SecurityClass(2, "private");
+            //            sc.AddLevel(s1);
+            //            sc.AddLevel(s2);
+            //            sc.AddConfig(new SecurityConfig("x", sc.FindConfigByVarName(xSecClassInput).SecurityLevel));
+            //            sc.AddConfig(new SecurityConfig("y", s2));
+            //            sc.AddConfig(new SecurityConfig("Z", s1));
             
             
             HashMap<String, Double> vari = new HashMap<>();
             String[] var = variables.replace(" ", "").split(",");*/
-            
+
+
+            System.out.println("Security stuff: ");
+            String security1 = scanner.nextLine();
+            System.out.println("Variable privacy: ");
+            String security2 = scanner.nextLine();
+
+
+
+            String news1 = security1.replaceAll("\\s", "");
+            String[] securityArgs = news1.split(",");
+            String news2 = security2.replaceAll("\\s", "");
+            String[] securityArgs2 = news2.split(",");
+
+            ArrayList<String> secs = new ArrayList<String>();
+
+            for (int i = 0; i < securityArgs.length; i++) {
+                String[] var = securityArgs[i].split("<");
+                for (String v : var){
+                    secs.add(v);
+                }
+            }
+            ArrayList<Integer> pointer = new ArrayList<>();
+            ArrayList<String> mem = new ArrayList<>();
+            int p = 0;
+            for (int i = 0; i < secs.size(); i++){
+               if (!mem.contains(secs.get(i))){
+                   mem.add(secs.get(i));
+                   pointer.add(1+p);
+               } else {
+                   secs.remove(i);
+                   i--;
+                   p = i;
+               }
+            }
+            Collections.sort(pointer);
+
+            SecurityClass[] privacies = new SecurityClass[secs.size()];
+            for (int i = 0; i < secs.size(); i++) {
+                privacies[i] = new SecurityClass(secs.get(i));
+                if (i != 0){
+                    privacies[i-pointer.get(i-1)].AddFlowToo(privacies[i]);
+                }
+
+            }
+            for (SecurityClass c : privacies){
+                sc.AddLevel(c);
+            }
+            for (String s : securityArgs2) {
+                String[] var = s.split("=");
+                sc.AddConfig(new SecurityConfig(var[0], sc.GetSecurityClassByName(var[1])));
+            }
+
+
+
 			// Build the parser for the content of the input in several steps
 
 			// Translate the input string into stream of characters 
@@ -162,7 +227,16 @@ public class Language {
 		}
 	}
 
+    public String getPrivacy(String[] all,String s){
 
+	    for (String a : all) {
+	        String[] ged = a.split("=");
+	        if (ged[1].equals(s)) {
+	            return ged[0];
+            }
+        }
+	    return null;
+    }
 
 	public class GeneratedAST extends LanguageBaseVisitor<String> {
         @Override public String visitStart(LanguageParser.StartContext ctx) { 
