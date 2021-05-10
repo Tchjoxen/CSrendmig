@@ -42,14 +42,14 @@ public class Language {
 
 		while (true) {
 			// Read an expression from the console
-			System.out.println("Enter an arithmetic expression: ");
-			scanner.nextLine();
-			String input = "if x>=y -> z:=x [] y>x -> z:=y fi";
-            // System.out.println("Count:");
-            // int count = Integer.parseInt(System.console().readLine());
-            /*System.out.println("Abstract Variable definitions:");
+			System.out.println("Enter a GCL program: ");
+			String input = scanner.nextLine();
+            //System.out.println("Count:");
+            //int count = Integer.parseInt(System.console().readLine());
+            System.out.println("Abstract Variable definitions:");
             String variables = scanner.nextLine();
 
+            
 
 
 
@@ -71,15 +71,19 @@ public class Language {
             //            sc.AddConfig(new SecurityConfig("x", sc.FindConfigByVarName(xSecClassInput).SecurityLevel));
             //            sc.AddConfig(new SecurityConfig("y", s2));
             //            sc.AddConfig(new SecurityConfig("Z", s1));
-            
+
             
             HashMap<String, Double> vari = new HashMap<>();
-            String[] var = variables.replace(" ", "").split(",");*/
+            String[] var = variables.split(",");
+            for (String s : var){
+                String[] v = s.split("=");
+                vari.put(v[0],Double.parseDouble(v[1]));
+            }
 
 
-            System.out.println("Security stuff: ");
+           /* System.out.println("Specify Security Lattice: (e.g public < private)");
             String security1 = scanner.nextLine();
-            System.out.println("Variable privacy: ");
+            System.out.println("Security Classification for Variables and Arrays: (e.g x = public , y = private)");
             String security2 = scanner.nextLine();
 
 
@@ -126,7 +130,7 @@ public class Language {
             for (String s : securityArgs2) {
                 String[] var = s.split("=");
                 sc.AddConfig(new SecurityConfig(var[0], sc.GetSecurityClassByName(var[1])));
-            }
+            }*/
 
 
 
@@ -144,7 +148,7 @@ public class Language {
 			// Create a parser for the given token stream
             LanguageParser parser = new LanguageParser(tokens);
             
-            ArrayList<String> as = secEval.visit(parser.start());
+            /*ArrayList<String> as = secEval.visit(parser.start());
             System.out.println("Actual flows: ");
             for (Flow f: secEval._secConfig.Flows
                     ) {
@@ -167,11 +171,14 @@ public class Language {
             }else {
             	System.out.println("not secure");
             }
+            System.out.println("");*/
             
 
             // System.out.println(generatedAST.visit(parser.start()));
-            /*ArrayList<Edge> edges = LGP.getProgramGraph(parser);
-
+            ArrayList<Edge> edges = LGP.getProgramGraph(parser);
+            StuckEvaluator se = new StuckEvaluator(vari);
+            se.stuckEval(edges);
+            /*
             for (Edge e : edges) {
                 System.out.println(e.GetPGElement());
             }
@@ -191,31 +198,7 @@ public class Language {
                     vk.zero = true;
                 }
                 varKonfigs1.add(vk);
-            }
-            
-            HashMap<String, String> Variables = new HashMap<>();
-            for (String s : var){
-                String[] v = s.split("=");
-                if (v[1].equals("private")) {
-                    Variables.put(v[0], v[1]);
-                }else if (v[1].equals("public")){
-                	Variables.put(v[0], v[1]);
-                }
-                else {
-                	throw new Exception();
-                }
-            }
-            
-            System.out.println("Allowed flows");
-            for (Map.Entry<String, String> v1 : Variables.entrySet()){
-            	for (Map.Entry<String, String> v2 : Variables.entrySet()){
-        			if(v2.getValue().equals("private")) {
-        				System.out.print(v1.getKey() + " -> " + v2.getKey() + ", ");
-        			}else if(v1.getValue().equals("public") && v2.getValue().equals("public")) {
-        				System.out.print(v1.getKey() + " -> " + v2.getKey() + ", ");
-        			}
-        		}	
-    		}	*/
+            }*/
             
             
            
